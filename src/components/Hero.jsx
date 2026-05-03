@@ -229,8 +229,8 @@ export default function Hero() {
         className="absolute pointer-events-auto"
         style={isMobile
           ? {
-              // Mobile: centered, full width, vertically centered
-              bottom: '8vh',
+              // Mobile: centered, full width, positioned near the top
+              top: '22vh',
               left: '50%',
               transform: 'translateX(-50%)',
               width: '100%',
