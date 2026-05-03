@@ -229,7 +229,7 @@ export default function Skills() {
     <section
       id="skills"
       ref={sectionRef}
-      className="relative py-28 px-6 md:px-16 min-h-screen"
+      className="relative py-20 md:py-28 px-4 md:px-16 min-h-screen"
       style={{
         /* Semi-transparent so the 3D model is dimly visible behind */
         background: 'rgba(2,0,0,0.68)',

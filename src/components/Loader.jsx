@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { startPreload, framesReady } from '../utils/preloadFrames';
 
-export default function Loader({ onDone }) {
+export default function Loader({ onDone, isMobile = false }) {
   const containerRef    = useRef(null);
   const glassRef        = useRef(null);
   const lettersRef      = useRef(null);
@@ -15,11 +15,16 @@ export default function Loader({ onDone }) {
 
   // Called externally when 3-D model finishes loading
   useEffect(() => {
-    window.__loaderModelReady = () => {
+    if (isMobile) {
+      // No model on mobile — mark model as done immediately
       progressObj.current.model = 1;
-      tryExit();
-    };
-  }, []); // eslint-disable-line
+    } else {
+      window.__loaderModelReady = () => {
+        progressObj.current.model = 1;
+        tryExit();
+      };
+    }
+  }, [isMobile]); // eslint-disable-line
 
   const updateBar = (val) => {
     const pct = Math.round(val * 100);
@@ -97,7 +102,7 @@ export default function Loader({ onDone }) {
           background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
           backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)',
           borderRadius: '28px', boxShadow: '0 0 0 1px rgba(255,255,255,0.03),0 32px 80px rgba(0,0,0,0.55)',
-          padding: '3rem 3.5rem', minWidth: 'min(420px,90vw)',
+          padding: isMobile ? '2.5rem 1.5rem' : '3rem 3.5rem', minWidth: 'min(420px,90vw)',
         }}>
         <div className="absolute top-0 left-[10%] right-[10%] h-[1px]"
           style={{ background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)' }} />
@@ -118,13 +123,13 @@ export default function Loader({ onDone }) {
         </div>
 
         {/* Name letters */}
-        <div ref={lettersRef} className="flex gap-0.5 overflow-hidden">
+        <div ref={lettersRef} className="flex gap-0.5 overflow-hidden flex-nowrap whitespace-nowrap">
           {'SURYADEEP'.split('').map((c, i) => (
             <span key={i} className="ll font-syne font-extrabold text-white inline-block"
-              style={{ fontSize: 'clamp(36px, 8vw, 68px)', lineHeight: 1 }}>{c}</span>
+              style={{ fontSize: 'clamp(24px, 8vw, 68px)', lineHeight: 1 }}>{c}</span>
           ))}
           <span className="ll font-syne font-extrabold inline-block ml-1"
-            style={{ fontSize: 'clamp(36px, 8vw, 68px)', lineHeight: 1, WebkitTextFillColor: 'transparent', WebkitTextStroke: '1.5px rgba(0,255,255,0.5)' }}>·</span>
+            style={{ fontSize: 'clamp(24px, 8vw, 68px)', lineHeight: 1, WebkitTextFillColor: 'transparent', WebkitTextStroke: '1.5px rgba(0,255,255,0.5)' }}>·</span>
         </div>
 
         {/* Role */}

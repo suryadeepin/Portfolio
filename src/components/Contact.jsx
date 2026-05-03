@@ -81,7 +81,7 @@ export default function Contact() {
       </div>
 
       {/* Glass card */}
-      <div ref={contentRef} className="relative z-10 text-center px-10 py-12 mx-6 max-w-2xl w-full rounded-3xl"
+      <div ref={contentRef} className="relative z-10 text-center px-6 md:px-10 py-10 md:py-12 mx-4 md:mx-6 max-w-2xl w-full rounded-3xl"
         style={{
           background: 'rgba(8,0,0,0.55)',
           border: '1px solid rgba(239,68,68,0.18)',

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { frames, framesReady } from '../utils/preloadFrames';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,18 +51,18 @@ function scheduleInterpolatedDraw(canvas, progress) {
 
 function Phase1({ r }) {
   return (
-    <div ref={r} className="absolute inset-0 flex flex-col items-center justify-end select-none pointer-events-none" style={{ opacity: 0, paddingBottom: '10vh' }}>
+    <div ref={r} className="absolute inset-0 flex flex-col items-center justify-end select-none pointer-events-none" style={{ opacity: 0, paddingBottom: '10vh', paddingLeft: '4vw', paddingRight: '4vw' }}>
       <div className="overflow-hidden">
         <span className="phase-word font-syne font-extrabold uppercase text-[var(--accent-red)] block"
-          style={{ fontSize: 'clamp(50px, 10vw, 130px)', lineHeight: 0.88, letterSpacing: '-0.04em' }}>
+          style={{ fontSize: 'clamp(36px, 8vw, 130px)', lineHeight: 0.88, letterSpacing: '-0.04em', textAlign: 'center' }}>
           ENGINEER
         </span>
       </div>
       <div className="overflow-hidden">
         <span className="phase-word font-syne font-extrabold uppercase block"
           style={{
-            fontSize: 'clamp(50px, 10vw, 130px)', lineHeight: 0.88, letterSpacing: '-0.04em',
-            WebkitTextFillColor: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.85)',
+            fontSize: 'clamp(36px, 8vw, 130px)', lineHeight: 0.88, letterSpacing: '-0.04em',
+            WebkitTextFillColor: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.85)', textAlign: 'center',
           }}>
           STUDENT
         </span>
@@ -73,15 +74,15 @@ function Phase1({ r }) {
 
 function Phase2({ r }) {
   return (
-    <div ref={r} className="absolute inset-0 flex flex-col items-start justify-end select-none pointer-events-none" style={{ paddingLeft: '8vw', paddingBottom: '10vh', opacity: 0 }}>
+    <div ref={r} className="absolute inset-0 flex flex-col items-start justify-end select-none pointer-events-none" style={{ paddingLeft: 'clamp(16px,6vw,8vw)', paddingBottom: '10vh', opacity: 0 }}>
       <div className="overflow-hidden">
-        <span className="phase-word font-syne font-extrabold uppercase text-white block" style={{ fontSize: 'clamp(40px, 8vw, 108px)', lineHeight: 0.9, letterSpacing: '-0.03em' }}>BUILDING</span>
+        <span className="phase-word font-syne font-extrabold uppercase text-white block" style={{ fontSize: 'clamp(30px, 7vw, 108px)', lineHeight: 0.9, letterSpacing: '-0.03em' }}>BUILDING</span>
       </div>
       <div className="overflow-hidden">
-        <span className="phase-word font-syne font-extrabold uppercase block" style={{ fontSize: 'clamp(28px, 5.5vw, 72px)', lineHeight: 0.9, letterSpacing: '-0.02em', color: 'var(--accent-red)' }}>INTELLIGENT</span>
+        <span className="phase-word font-syne font-extrabold uppercase block" style={{ fontSize: 'clamp(22px, 5vw, 72px)', lineHeight: 0.9, letterSpacing: '-0.02em', color: 'var(--accent-red)' }}>INTELLIGENT</span>
       </div>
       <div className="overflow-hidden">
-        <span className="phase-word font-syne font-bold uppercase text-white/60 block" style={{ fontSize: 'clamp(20px, 3.5vw, 50px)', lineHeight: 1, letterSpacing: '-0.01em' }}>SYSTEMS</span>
+        <span className="phase-word font-syne font-bold uppercase text-white/60 block" style={{ fontSize: 'clamp(16px, 3.2vw, 50px)', lineHeight: 1, letterSpacing: '-0.01em' }}>SYSTEMS</span>
       </div>
     </div>
   );
@@ -89,12 +90,12 @@ function Phase2({ r }) {
 
 function Phase3({ r }) {
   return (
-    <div ref={r} className="absolute inset-0 flex flex-col items-end justify-end select-none pointer-events-none" style={{ paddingRight: '8vw', paddingBottom: '10vh', opacity: 0 }}>
+    <div ref={r} className="absolute inset-0 flex flex-col items-end justify-end select-none pointer-events-none" style={{ paddingRight: 'clamp(16px,6vw,8vw)', paddingBottom: '10vh', opacity: 0 }}>
       <div className="overflow-hidden">
-        <span className="phase-word font-syne font-extrabold uppercase text-white block text-right" style={{ fontSize: 'clamp(40px, 8vw, 108px)', lineHeight: 0.9, letterSpacing: '-0.04em' }}>SOFTWARE</span>
+        <span className="phase-word font-syne font-extrabold uppercase text-white block text-right" style={{ fontSize: 'clamp(30px, 7vw, 108px)', lineHeight: 0.9, letterSpacing: '-0.04em' }}>SOFTWARE</span>
       </div>
       <div className="overflow-hidden">
-        <span className="phase-word font-syne font-extrabold uppercase block text-right" style={{ fontSize: 'clamp(40px, 8vw, 108px)', lineHeight: 0.9, letterSpacing: '-0.04em', color: 'var(--accent-red)' }}>DEVELOPER</span>
+        <span className="phase-word font-syne font-extrabold uppercase block text-right" style={{ fontSize: 'clamp(30px, 7vw, 108px)', lineHeight: 0.9, letterSpacing: '-0.04em', color: 'var(--accent-red)' }}>DEVELOPER</span>
       </div>
       <div style={{ marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '5px 14px', borderRadius: 999, border: '1px solid rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)' }}>
         <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-red)', boxShadow: '0 0 6px var(--accent-red)' }} />
@@ -151,6 +152,7 @@ export default function ImageScrub() {
   const p1 = useRef(null), p2 = useRef(null), p3 = useRef(null),
         p4 = useRef(null), p5 = useRef(null);
   const ownTriggers   = useRef([]);
+  const isMobile      = useIsMobile();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -248,7 +250,7 @@ export default function ImageScrub() {
   }, []);
 
   return (
-    <div id="image-scrub" ref={containerRef} className="relative w-full" style={{ height: '700vh' }}>
+    <div id="image-scrub" ref={containerRef} className="relative w-full" style={{ height: isMobile ? '400vh' : '700vh' }}>
       <div ref={scrubInnerRef} className="scrub-inner sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
 
         {/* ── Image ── */}

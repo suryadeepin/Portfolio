@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { startPreload } from './utils/preloadFrames';
+import { useIsMobile } from './hooks/useIsMobile';
 import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
@@ -18,16 +19,18 @@ startPreload();
 
 function App() {
   const [loaderDone, setLoaderDone] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <>
-      <CustomCursor />
+      {/* Custom cursor — desktop only (no pointer on touch) */}
+      {!isMobile && <CustomCursor />}
 
-      {/* Loader waits for both model + frames to be ready */}
-      <Loader onDone={() => setLoaderDone(true)} />
+      {/* Loader: on mobile skip model-ready gate (no model loaded) */}
+      <Loader onDone={() => setLoaderDone(true)} isMobile={isMobile} />
 
-      {/* 3D model always mounted so it loads during loader */}
-      <HeroAvatar />
+      {/* 3D model — only on desktop */}
+      {!isMobile && <HeroAvatar />}
 
       {/* Subtle ambient background */}
       <GlobalBackground />

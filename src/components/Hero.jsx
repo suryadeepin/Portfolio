@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -193,6 +194,7 @@ function TechCluster() {
 export default function Hero() {
   const containerRef = useRef(null);
   const textRef      = useRef(null);
+  const isMobile     = useIsMobile();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -218,16 +220,34 @@ export default function Hero() {
       ref={containerRef}
       className="relative w-full h-screen pointer-events-none overflow-hidden"
     >
-      {/* Tech cluster — upper-left blank space (hidden on very small screens) */}
-      <TechCluster />
+      {/* Tech cluster — desktop only (upper-left blank space) */}
+      {!isMobile && <TechCluster />}
 
-      {/* Text block — bottom left */}
+      {/* Text block */}
       <div
         ref={textRef}
         className="absolute pointer-events-auto"
-        style={{ bottom: '7vh', left: '5vw', zIndex: 10, maxWidth: '46vw' }}
+        style={isMobile
+          ? {
+              // Mobile: centered, full width, vertically centered
+              bottom: '8vh',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '100%',
+              padding: '0 5vw',
+              zIndex: 10,
+              textAlign: 'center',
+            }
+          : {
+              // Desktop: bottom-left
+              bottom: '7vh',
+              left: '5vw',
+              zIndex: 10,
+              maxWidth: '46vw',
+            }
+        }
       >
-        <div className="hero-line flex items-center gap-2 mb-2" style={{ opacity: 0 }}>
+        <div className="hero-line flex items-center gap-2 mb-2" style={{ opacity: 0, justifyContent: isMobile ? 'center' : 'flex-start' }}>
           <span style={{ width: 22, height: 1, background: 'var(--accent-red)', display: 'block', flexShrink: 0 }} />
           <span className="font-space uppercase tracking-[0.32em] text-[var(--accent-red)]"
             style={{ fontSize: 'clamp(8px, 0.85vw, 11px)', whiteSpace: 'nowrap' }}>
@@ -236,12 +256,13 @@ export default function Hero() {
         </div>
 
         <h1 className="hero-line font-syne font-extrabold leading-[0.9] tracking-tighter text-white m-0"
-          style={{ fontSize: 'clamp(38px, 5.5vw, 78px)', opacity: 0 }}>
+          style={{ fontSize: isMobile ? 'clamp(20px, 8.5vw, 56px)' : 'clamp(32px, 5.5vw, 78px)', opacity: 0, whiteSpace: 'nowrap' }}>
           SURYADEEP
         </h1>
         <h2 className="hero-line font-syne font-extrabold leading-[0.9] tracking-tighter m-0"
           style={{
-            fontSize: 'clamp(30px, 4.2vw, 62px)', opacity: 0,
+            fontSize: isMobile ? 'clamp(16px, 6.5vw, 40px)' : 'clamp(26px, 4.2vw, 62px)', opacity: 0,
+            whiteSpace: 'nowrap',
             WebkitTextFillColor: 'transparent',
             WebkitTextStroke: '1.5px rgba(239,68,68,0.7)',
           }}>
@@ -260,13 +281,14 @@ export default function Hero() {
               border: '1px solid rgba(239,68,68,0.16)',
               backdropFilter: 'blur(14px)',
               WebkitBackdropFilter: 'blur(14px)',
+              width: isMobile ? '100%' : 'auto',
             }}
           >
             <p className="font-space text-gray-400 uppercase tracking-[0.22em] m-0"
-              style={{ fontSize: 'clamp(9px, 0.95vw, 13px)', whiteSpace: 'nowrap' }}>
+              style={{ fontSize: 'clamp(9px, 0.95vw, 13px)', whiteSpace: 'nowrap', textAlign: isMobile ? 'center' : 'left' }}>
               Software Engineering Student
             </p>
-            <div className="flex gap-5">
+            <div className="flex gap-5" style={{ justifyContent: isMobile ? 'center' : 'flex-start' }}>
               {[
                 { label: 'GitHub',   href: 'https://github.com/suryadeepin' },
                 { label: 'LinkedIn', href: 'https://www.linkedin.com/in/suryadeep-banerjee' },
@@ -282,7 +304,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-badge flex items-center gap-2 mt-5" style={{ opacity: 0 }}>
+        <div className="hero-badge flex items-center gap-2 mt-5" style={{ opacity: 0, justifyContent: isMobile ? 'center' : 'flex-start' }}>
           <div style={{ width: 1, height: 28, background: 'linear-gradient(180deg, transparent, var(--accent-red))' }} />
           <span className="font-space text-[8px] tracking-[0.38em] uppercase text-[var(--accent-red)]">Scroll</span>
         </div>

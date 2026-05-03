@@ -91,9 +91,9 @@ function TimelineEntry({ entry }) {
   }, [entry.side]);
 
   return (
-    <div className={`relative flex items-center w-full mb-16 ${entry.side === 'left' ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-      {/* Card */}
-      <div className={`w-full md:w-[45%] ${entry.side === 'left' ? 'md:pr-12' : 'md:pl-12'}`}>
+    <div className={`relative flex items-center w-full mb-10 md:mb-16 ${entry.side === 'left' ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+      {/* Card — full-width on mobile, 45% on desktop */}
+      <div className="w-full md:w-[45%] md:pr-12 md:pl-0" style={entry.side === 'right' ? { paddingLeft: 0, paddingRight: 0 } : {}}>
         <div
           ref={cardRef}
           className="rounded-2xl p-6 px-8 relative overflow-hidden"
@@ -153,7 +153,7 @@ export default function Experience() {
   }, []);
 
   return (
-    <section id="experience" ref={sectionRef} className="relative py-28 px-6 md:px-16 min-h-screen overflow-hidden" style={{ background: 'rgba(3,0,0,0.82)' }}>
+    <section id="experience" ref={sectionRef} className="relative py-20 md:py-28 px-4 md:px-16 min-h-screen overflow-hidden" style={{ background: 'rgba(3,0,0,0.82)' }}>
 
       {/* ── Animated background ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

@@ -82,7 +82,7 @@ export default function ResumeSection() {
     <section
       id="resume"
       ref={sectionRef}
-      className="relative w-full py-32 flex flex-col items-center justify-center overflow-hidden"
+      className="relative w-full py-20 md:py-32 flex flex-col items-center justify-center overflow-hidden"
       style={{ background: 'transparent' }}
     >
       {/* ── Animated background ── */}
@@ -179,7 +179,7 @@ export default function ResumeSection() {
             target="_blank"
             rel="noopener noreferrer"
             {...(link.download ? { download: true } : {})}
-            className="group flex items-center gap-4 px-8 py-5 transition-all duration-300 hover:-translate-y-1"
+            className="group flex items-center gap-4 px-6 md:px-8 py-5 transition-all duration-300 hover:-translate-y-1 w-full md:w-auto"
             style={{
               background: link.color,
               border: `1px solid ${link.border}`,
@@ -187,7 +187,7 @@ export default function ResumeSection() {
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-              minWidth: '220px',
+              minWidth: 0,
             }}
           >
             <div
