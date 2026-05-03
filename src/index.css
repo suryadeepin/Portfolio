@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Core backgrounds */
+  --bg-color:        #070000;
+  --bg-secondary:    #0d0000;
+  --surface-color:   rgba(30, 0, 0, 0.45);
+
+  /* Red palette */
+  --accent-red:      #ef4444;     /* primary bright red */
+  --accent-crimson:  #dc2626;     /* medium red */
+  --accent-scarlet:  #991b1b;     /* deep red */
+  --accent-blood:    #7f1d1d;     /* darkest red */
+  --accent-glow:     rgba(239, 68, 68, 0.35);
+
+  /* Legacy aliases (so existing code doesn't break) */
+  --accent-violet:   #dc2626;
+  --accent-cyan:     #ef4444;
+  --accent-pink:     #991b1b;
+
+  /* Text */
+  --text-color:      #f5f0f0;
+  --muted-color:     #7a6868;
+
+  /* Glassmorphism — red-tinted */
+  --glass-bg:        rgba(30, 0, 0, 0.25);
+  --glass-border:    rgba(239, 68, 68, 0.15);
+  --glass-highlight: rgba(239, 68, 68, 0.25);
+  --glass-shadow:    0 8px 32px 0 rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(239, 68, 68, 0.08);
+}
+
+/* ─── Base ─── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: auto; } /* GSAP handles scroll — native smooth-scroll conflicts with scrub:true */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ─── */
+.font-syne   { font-family: 'Syne', sans-serif; }
+.font-space  { font-family: 'Space Mono', monospace; }
+.font-grotesk { font-family: 'Space Grotesk', sans-serif; }
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb {
+  background: var(--accent-scarlet);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-red); }
+
+body.loading { overflow: hidden; }
+
+/* ─── Text Gradients ─── */
+.text-gradient {
+  background: linear-gradient(135deg, #fff 0%, var(--accent-red) 50%, var(--accent-crimson) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+.text-gradient-red {
+  background: linear-gradient(90deg, var(--accent-red), #fff 60%, var(--accent-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-outline-red {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent-red);
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%;   }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%;   }
+}
+
+/* ─── Glassmorphism ─── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+  opacity: 0.7;
+}
+
+.glass-button {
+  background: rgba(239, 68, 68, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.glass-button:hover {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.2);
+}
+
+/* ─── Glow orbs ─── */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  z-index: 0;
+  pointer-events: none;
+  animation: orbFloat 12s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat {
+  0%   { transform: translate(0, 0)       scale(1);    }
+  50%  { transform: translate(30px, -30px) scale(1.12); }
+  100% { transform: translate(-25px, 22px) scale(0.92); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1);    }
+  50%       { opacity: 1.0; transform: scale(1.12); }
+}
+
+@keyframes techFloat {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-7px); }
+}
+
+/* ─── Red shimmer line ─── */
+.red-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+}
+
+/* ─── Kinetic word reveal ─── */
+.word-reveal {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.word-reveal > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.word-reveal.visible > span {
+  transform: translateY(0);
+}
+
+/* ─── Cursor target class ─── */
+.cursor-target { cursor: none; }
+
+/* ─── Section base ─── */
+section {
+  position: relative;
+}
+
+/* ─── Hero nav links ─── */
+@keyframes link-pulse {
+  0%, 100% { box-shadow: 0 0 0px transparent; border-color: rgba(239, 68, 68, 0.35); }
+  50%       { box-shadow: 0 0 10px rgba(239, 68, 68, 0.25); border-color: rgba(239, 68, 68, 0.65); }
+}
+
+.hero-nav-link {
+  position: relative;
+  padding: 4px 12px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 4px;
+  animation: link-pulse 2.8s ease-in-out infinite;
+  transition: color 0.25s ease, letter-spacing 0.25s ease, text-shadow 0.25s ease,
+              background 0.25s ease, border-color 0.25s ease;
+}
+/* stagger the pulse on each link */
+.hero-nav-link:nth-child(2) { animation-delay: 0.9s; }
+.hero-nav-link:nth-child(3) { animation-delay: 1.8s; }
+
+.hero-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--accent-red);
+  box-shadow: 0 0 6px var(--accent-red);
+  transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.hero-nav-link:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.7);
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.45);
+  animation: none; /* stop pulse on hover — clean interaction */
+}
+.hero-nav-link:hover::after {
+  width: 100%;
+}
