@@ -29,6 +29,10 @@
       <p align="center"><sub>🏠 Hero — 3D Avatar + Tech Cluster</sub></p>
     </td>
     <td width="50%">
+      <img src=".github/screenshots/bio.png" alt="Contact Section" />
+      <p align="center"><sub>👨🏻‍💻 Bio</sub></p>
+    </td>
+    <td width="50%">
       <img src=".github/screenshots/cinematic.png" alt="Cinematic Section" />
       <p align="center"><sub>🎬 Cinematic Scroll — Frame Scrubbing</sub></p>
     </td>
@@ -104,8 +108,6 @@ npm install
 npm run dev
 ```
 
-The site will be live at **http://localhost:5173**
-
 ### Build for Production
 
 ```bash
@@ -122,11 +124,12 @@ Portfolio/
 │   ├── hero-video/          # 80 pre-rendered JPEG frames for scroll scrubbing
 │   ├── Resume.pdf           # Downloadable résumé
 │   ├── avatar.enc           # Encoded 3D avatar model
-│   └── favicon.svg
+│   └── logo.png             # Site favicon
 ├── src/
 │   ├── components/
 │   │   ├── Hero.jsx         # Hero section with tech cluster & 3D avatar
 │   │   ├── HeroAvatar.jsx   # Three.js 3D avatar with head-tracking
+│   │   ├── Bio.jsx          # About Me section
 │   │   ├── ImageScrub.jsx   # Scroll-synced frame animation
 │   │   ├── Skills.jsx       # Technical arsenal section
 │   │   ├── Experience.jsx   # Journey timeline
@@ -137,9 +140,11 @@ Portfolio/
 │   │   └── CustomCursor.jsx
 │   ├── hooks/
 │   │   ├── useMagnetic.js   # Magnetic cursor effect hook
-│   │   └── useScramble.js   # Text scramble animation hook
+│   │   ├── useScramble.js   # Text scramble animation hook
+│   │   └── useIsMobile.js   # Mobile detection hook
 │   ├── utils/
-│   │   └── preloadFrames.js # Frame preloader for smooth scrubbing
+│   │   ├── preloadFrames.js # Frame preloader for smooth scrubbing
+│   │   └── decrypt.js       # Avatar decryption utility
 │   └── index.css            # Global styles & design tokens
 └── vite.config.js
 ```
