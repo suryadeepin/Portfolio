@@ -21,6 +21,20 @@ function App() {
   const [loaderDone, setLoaderDone] = useState(false);
   const isMobile = useIsMobile();
 
+  // Handle global styles & mobile logic
+  useEffect(() => {
+    // 1) Force scroll to top on every refresh
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    // 2) Disable scrollbar for a cleaner cinematic look
+    document.body.style.overflowX = 'hidden';
+    document.body.style.scrollbarWidth = 'none'; // Firefox
+    document.body.style.msOverflowStyle = 'none'; // IE/Edge
+  }, []);
+
   return (
     <>
       {/* Custom cursor — desktop only (no pointer on touch) */}
