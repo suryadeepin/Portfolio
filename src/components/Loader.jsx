@@ -2,6 +2,14 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { startPreload, framesReady } from '../utils/preloadFrames';
 
+// Helpers to aggressively block all scroll actions
+const preventScroll = (e) => e.preventDefault();
+const preventKeys = (e) => {
+  if (['Space', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.code)) {
+    e.preventDefault();
+  }
+};
+
 export default function Loader({ onDone, isMobile = false }) {
   const containerRef    = useRef(null);
   const glassRef        = useRef(null);
@@ -47,8 +55,9 @@ export default function Loader({ onDone, isMobile = false }) {
   const unlockScroll = () => {
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
-    window.onwheel = null;
-    window.ontouchmove = null;
+    window.removeEventListener('wheel', preventScroll);
+    window.removeEventListener('touchmove', preventScroll);
+    window.removeEventListener('keydown', preventKeys);
   };
 
   const doExit = () => {
@@ -66,10 +75,10 @@ export default function Loader({ onDone, isMobile = false }) {
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
-    // Block scroll wheel and touch dragging
-    const preventScroll = (e) => e.preventDefault();
-    window.onwheel = preventScroll;
-    window.ontouchmove = preventScroll;
+    // Block scroll wheel, touch dragging, and keyboard scrolling with { passive: false }
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+    window.addEventListener('keydown', preventKeys, { passive: false });
 
     // Start preloading frames immediately
     startPreload((ratio) => {
