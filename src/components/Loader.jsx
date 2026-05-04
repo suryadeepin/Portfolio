@@ -44,9 +44,16 @@ export default function Loader({ onDone, isMobile = false }) {
     setTimeout(doExit, 400);
   };
 
+  const unlockScroll = () => {
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    window.onwheel = null;
+    window.ontouchmove = null;
+  };
+
   const doExit = () => {
     // Re-enable scrolling when loader is done
-    document.body.style.overflow = '';
+    unlockScroll();
     if (onDone) onDone();
     gsap.to(containerRef.current, {
       yPercent: -105, opacity: 0, duration: 0.75, ease: 'power3.inOut',
@@ -55,8 +62,14 @@ export default function Loader({ onDone, isMobile = false }) {
   };
 
   useEffect(() => {
-    // Disable scrolling while loader is visible
+    // Aggressively disable scrolling while loader is visible
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    
+    // Block scroll wheel and touch dragging
+    const preventScroll = (e) => e.preventDefault();
+    window.onwheel = preventScroll;
+    window.ontouchmove = preventScroll;
 
     // Start preloading frames immediately
     startPreload((ratio) => {
