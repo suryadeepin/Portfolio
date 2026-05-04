@@ -23,17 +23,24 @@ function App() {
 
   // Handle global styles & mobile logic
   useEffect(() => {
-    // 1) Force scroll to top on every refresh
+    // Force scroll to top on every refresh
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
 
-    // 2) Disable scrollbar for a cleaner cinematic look
+    // Disable scrollbar for a cleaner cinematic look
     document.body.style.overflowX = 'hidden';
     document.body.style.scrollbarWidth = 'none'; // Firefox
     document.body.style.msOverflowStyle = 'none'; // IE/Edge
   }, []);
+
+  // Guarantee absolute top position the exact moment the content mounts
+  useEffect(() => {
+    if (loaderDone) {
+      window.scrollTo(0, 0);
+    }
+  }, [loaderDone]);
 
   return (
     <>
@@ -49,17 +56,26 @@ function App() {
       {/* Subtle ambient background */}
       <GlobalBackground />
 
-      {loaderDone && <Navbar />}
-
-      <main className="relative" style={{ zIndex: 10, background: 'transparent' }}>
-        <Hero />
-        <Bio />
-        <ImageScrub />
-        <Skills />
-        <Experience />
-        <ResumeSection />
-        <Contact />
-      </main>
+      {/* 
+        CRITICAL FIX: 
+        We physically do not render the <main> content until the loader finishes. 
+        If the page has no content, it has no height. If it has no height, it is 
+        100% physically impossible for any browser or device to scroll it.
+      */}
+      {loaderDone && (
+        <>
+          <Navbar />
+          <main className="relative" style={{ zIndex: 10, background: 'transparent' }}>
+            <Hero />
+            <Bio />
+            <ImageScrub />
+            <Skills />
+            <Experience />
+            <ResumeSection />
+            <Contact />
+          </main>
+        </>
+      )}
     </>
   );
 }
