@@ -61,6 +61,9 @@ export default function Loader({ onDone, isMobile = false }) {
   };
 
   const doExit = () => {
+    // Force the browser back to the absolute top before unlocking scroll
+    window.scrollTo(0, 0);
+
     // Re-enable scrolling when loader is done
     unlockScroll();
     if (onDone) onDone();
