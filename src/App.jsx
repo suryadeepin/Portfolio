@@ -51,7 +51,7 @@ function App() {
       <Loader onDone={() => setLoaderDone(true)} isMobile={isMobile} />
 
       {/* 3D model — only on desktop */}
-      {!isMobile && <HeroAvatar />}
+      {!isMobile && <HeroAvatar isReady={loaderDone} />}
 
       {/* Subtle ambient background */}
       <GlobalBackground />

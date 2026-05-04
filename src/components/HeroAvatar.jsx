@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroAvatar() {
+export default function HeroAvatar({ isReady }) {
   const mountRef     = useRef(null);
   const containerRef = useRef(null);
   const rendererRef  = useRef(null);
@@ -23,6 +23,7 @@ export default function HeroAvatar() {
   const skillTargetRef = useRef(null); // set by skillHover events
   const ownTriggersRef = useRef([]); // only kill our own ScrollTriggers on cleanup
   const overlayRef     = useRef(null); // black overlay — fades in to hide model
+  const loadedDataRef  = useRef(null); // holds char, cam, etc. for scroll triggers
 
   const tickHead = useCallback(() => {
     const head = headRef.current;
@@ -183,87 +184,10 @@ export default function HeroAvatar() {
           gsap.to(rimLight, { intensity: 1.6,             duration: 1.8, ease: 'power2.inOut' });
           gsap.to(ambientLight, { intensity: 0.1,         duration: 1.8, ease: 'power2.inOut' });
 
+          // Save variables for the ScrollTriggers
+          loadedDataRef.current = { char, cam, monitor, screenLight };
+
           if (window.__loaderModelReady) window.__loaderModelReady();
-
-          // ──────────────────────────────────────────
-          // SCROLL TIMELINES — minimal, scrub:true = instant 1:1 scroll
-          // ──────────────────────────────────────────
-          const wrap = containerRef.current;
-
-          // 1. Hero → Bio: character rotates + shifts left in viewport
-          const tl1 = gsap.timeline({
-            scrollTrigger: {
-              trigger: '#bio',
-              start: 'top bottom',
-              end: 'top top',
-              scrub: true,
-              onEnter:     () => { zoneRef.current = 'bio'; },
-              onLeaveBack: () => { zoneRef.current = 'hero'; },
-            },
-          })
-            .fromTo(char.rotation, { y: 0, x: 0 }, { y: 0.7, x: 0.03, ease: 'none' }, 0)
-            .fromTo(cam.position,
-            { x: -2.65, z: 24.7, y: 13.1 },
-            { x: 6.5, z: 50, y: 11.5, ease: 'none' }, 0);
-          ownTriggersRef.current.push(tl1.scrollTrigger);
-
-          if (monitor) {
-            const tl2 = gsap.timeline({
-              scrollTrigger: { trigger: '#bio', start: 'top 50%', end: 'top top', scrub: true },
-            })
-              .to(monitor.material, { opacity: 1 }, 0)
-              .to(monitor.position, { y: 0, z: 0 }, 0);
-            ownTriggersRef.current.push(tl2.scrollTrigger);
-          }
-          if (screenLight) {
-            const sl = gsap.to(screenLight.material, {
-              opacity: 1,
-              scrollTrigger: { trigger: '#bio', start: 'top 40%', end: 'top top', scrub: true },
-            });
-            ownTriggersRef.current.push(sl.scrollTrigger);
-          }
-
-          const overlay = overlayRef.current;
-          const overlayProxy = { scrubOp: 0, tweenOp: 0 };
-          const updateOverlay = () => {
-            if (overlay) overlay.style.opacity = Math.max(0, Math.min(1, overlayProxy.scrubOp + overlayProxy.tweenOp));
-          };
-
-          // tl3: fade the overlay IN (black) to hide model during image-scrub
-          const tl3 = gsap.timeline({
-            scrollTrigger: {
-              trigger: '#image-scrub',
-              start: 'top bottom',
-              end: 'top top',
-              scrub: true,
-              onEnter:     () => { zoneRef.current = 'scrub'; },
-              onLeaveBack: () => { zoneRef.current = 'bio'; },
-            },
-          })
-            .fromTo(overlayProxy,
-              { scrubOp: 0 },
-              { scrubOp: 1, ease: 'none', onUpdate: updateOverlay },
-              0
-            )
-            .to(char.rotation, { x: 0, ease: 'none' }, 0);
-          ownTriggersRef.current.push(tl3.scrollTrigger);
-
-          // Skills zone: partially lift the overlay so model shows dimly behind glass cards
-          const st4 = ScrollTrigger.create({
-            trigger: '#skills',
-            start: 'top 85%',
-            onEnter: () => {
-              zoneRef.current = 'post';
-              gsap.to(overlayProxy,  { tweenOp: -0.28, duration: 0.9, ease: 'power2.out', onUpdate: updateOverlay });
-              gsap.to(cam.position,  { x: 0, z: 28, y: 20, duration: 0.9, ease: 'power2.out' });
-              gsap.to(char.rotation, { y: 0, x: 0, duration: 0.9, ease: 'power2.out' });
-            },
-            onLeaveBack: () => {
-              zoneRef.current = 'scrub';
-              gsap.to(overlayProxy,  { tweenOp: 0, duration: 0.4, ease: 'power2.in', onUpdate: updateOverlay });
-            },
-          });
-          ownTriggersRef.current.push(st4);
 
         });
       } catch (e) { console.error('Avatar load failed:', e); }
@@ -309,7 +233,89 @@ export default function HeroAvatar() {
       renderer.dispose();
       if (container?.contains(renderer.domElement)) container.removeChild(renderer.domElement);
     };
-  }, [tickHead]);
+  }, [tickHead]); // Initialization effect
+
+  // ── SCROLL TIMELINES: Initialize ONLY when DOM is ready ──
+  useEffect(() => {
+    if (!isReady || !loadedDataRef.current) return;
+    const { char, cam, monitor, screenLight } = loadedDataRef.current;
+
+    // 1. Hero → Bio: character rotates + shifts left in viewport
+    const tl1 = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#bio',
+        start: 'top bottom',
+        end: 'top top',
+        scrub: true,
+        onEnter:     () => { zoneRef.current = 'bio'; },
+        onLeaveBack: () => { zoneRef.current = 'hero'; },
+      },
+    })
+      .fromTo(char.rotation, { y: 0, x: 0 }, { y: 0.7, x: 0.03, ease: 'none' }, 0)
+      .fromTo(cam.position,
+      { x: -2.65, z: 24.7, y: 13.1 },
+      { x: 6.5, z: 50, y: 11.5, ease: 'none' }, 0);
+    ownTriggersRef.current.push(tl1.scrollTrigger);
+
+    if (monitor) {
+      const tl2 = gsap.timeline({
+        scrollTrigger: { trigger: '#bio', start: 'top 50%', end: 'top top', scrub: true },
+      })
+        .to(monitor.material, { opacity: 1 }, 0)
+        .to(monitor.position, { y: 0, z: 0 }, 0);
+      ownTriggersRef.current.push(tl2.scrollTrigger);
+    }
+    if (screenLight) {
+      const sl = gsap.to(screenLight.material, {
+        opacity: 1,
+        scrollTrigger: { trigger: '#bio', start: 'top 40%', end: 'top top', scrub: true },
+      });
+      ownTriggersRef.current.push(sl.scrollTrigger);
+    }
+
+    const overlay = overlayRef.current;
+    const overlayProxy = { scrubOp: 0, tweenOp: 0 };
+    const updateOverlay = () => {
+      if (overlay) overlay.style.opacity = Math.max(0, Math.min(1, overlayProxy.scrubOp + overlayProxy.tweenOp));
+    };
+
+    // tl3: fade the overlay IN (black) to hide model during image-scrub
+    const tl3 = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#image-scrub',
+        start: 'top bottom',
+        end: 'top top',
+        scrub: true,
+        onEnter:     () => { zoneRef.current = 'scrub'; },
+        onLeaveBack: () => { zoneRef.current = 'bio'; },
+      },
+    })
+      .fromTo(overlayProxy,
+        { scrubOp: 0 },
+        { scrubOp: 1, ease: 'none', onUpdate: updateOverlay },
+        0
+      )
+      .to(char.rotation, { x: 0, ease: 'none' }, 0);
+    ownTriggersRef.current.push(tl3.scrollTrigger);
+
+    // Skills zone: partially lift the overlay so model shows dimly behind glass cards
+    const st4 = ScrollTrigger.create({
+      trigger: '#skills',
+      start: 'top 85%',
+      onEnter: () => {
+        zoneRef.current = 'post';
+        gsap.to(overlayProxy,  { tweenOp: -0.28, duration: 0.9, ease: 'power2.out', onUpdate: updateOverlay });
+        gsap.to(cam.position,  { x: 0, z: 28, y: 20, duration: 0.9, ease: 'power2.out' });
+        gsap.to(char.rotation, { y: 0, x: 0, duration: 0.9, ease: 'power2.out' });
+      },
+      onLeaveBack: () => {
+        zoneRef.current = 'scrub';
+        gsap.to(overlayProxy,  { tweenOp: 0, duration: 0.4, ease: 'power2.in', onUpdate: updateOverlay });
+      },
+    });
+    ownTriggersRef.current.push(st4);
+
+  }, [isReady]);
 
   return (
     <div
