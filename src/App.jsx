@@ -28,6 +28,12 @@ function App() {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
+    
+    // Clear Google text fragments from URL for a cleaner look
+    if (window.location.hash.includes(':~:text=')) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+
     window.scrollTo(0, 0);
 
     // Disable scrollbar for a cleaner cinematic look
