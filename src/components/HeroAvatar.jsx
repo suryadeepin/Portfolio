@@ -239,7 +239,7 @@ export default function HeroAvatar({ isReady }) {
     const tl1 = gsap.timeline({
       scrollTrigger: {
         trigger: '#bio',
-        start: 'top bottom',
+        start: 'top 98%',
         end: 'top top',
         scrub: true,
         onEnter:     () => { zoneRef.current = 'bio'; },
