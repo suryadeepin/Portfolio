@@ -200,11 +200,11 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       gsap.fromTo('.hero-line',
         { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.08, duration: 1, ease: 'power3.out', delay: 3.5 }
+        { y: 0, opacity: 1, stagger: 0.08, duration: 1, ease: 'power3.out', delay: 0.1 }
       );
       gsap.fromTo('.hero-badge',
         { y: 24, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 4.0 }
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.4 }
       );
       gsap.to(textRef.current, {
         y: -100, opacity: 0,
