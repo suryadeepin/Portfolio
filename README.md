@@ -29,31 +29,33 @@
       <p align="center"><sub>🏠 Hero — 3D Avatar + Tech Cluster</sub></p>
     </td>
     <td width="50%">
-      <img src=".github/screenshots/bio.png" alt="Contact Section" />
+      <img src=".github/screenshots/bio.png" alt="Bio Section" />
       <p align="center"><sub>👨🏻‍💻 Bio</sub></p>
     </td>
+  </tr>
+  <tr>
     <td width="50%">
       <img src=".github/screenshots/cinematic.png" alt="Cinematic Section" />
       <p align="center"><sub>🎬 Cinematic Scroll — Frame Scrubbing</sub></p>
     </td>
-  </tr>
-  <tr>
     <td width="50%">
       <img src=".github/screenshots/skills.png" alt="Skills Section" />
       <p align="center"><sub>⚡ Technical Arsenal</sub></p>
     </td>
+  </tr>
+  <tr>
     <td width="50%">
       <img src=".github/screenshots/journey.png" alt="Journey Section" />
       <p align="center"><sub>📅 Journey & Timeline</sub></p>
     </td>
-  </tr>
-  <tr>
     <td width="50%">
       <img src=".github/screenshots/resume.png" alt="Resume Section" />
       <p align="center"><sub>📄 Resume & Connect</sub></p>
     </td>
-    <td width="50%">
-      <img src=".github/screenshots/contact.png" alt="Contact Section" />
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <img src=".github/screenshots/contact.png" alt="Contact Section" width="50%" />
       <p align="center"><sub>📬 Contact</sub></p>
     </td>
   </tr>
