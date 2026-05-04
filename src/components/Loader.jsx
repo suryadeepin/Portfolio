@@ -45,6 +45,8 @@ export default function Loader({ onDone, isMobile = false }) {
   };
 
   const doExit = () => {
+    // Re-enable scrolling when loader is done
+    document.body.style.overflow = '';
     if (onDone) onDone();
     gsap.to(containerRef.current, {
       yPercent: -105, opacity: 0, duration: 0.75, ease: 'power3.inOut',
@@ -53,6 +55,9 @@ export default function Loader({ onDone, isMobile = false }) {
   };
 
   useEffect(() => {
+    // Disable scrolling while loader is visible
+    document.body.style.overflow = 'hidden';
+
     // Start preloading frames immediately
     startPreload((ratio) => {
       progressObj.current.frames = ratio;
