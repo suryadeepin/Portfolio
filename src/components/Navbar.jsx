@@ -120,15 +120,15 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const navStyle = {
-    background     : scrolled ? 'rgba(6,0,0,0.88)' : 'rgba(6,0,0,0.55)',
-    backdropFilter : 'blur(28px)',
-    WebkitBackdropFilter: 'blur(28px)',
+    background     : scrolled ? 'rgba(20,20,22,0.60)' : 'rgba(20,20,22,0.30)',
+    backdropFilter : 'blur(48px) saturate(180%)',
+    WebkitBackdropFilter: 'blur(48px) saturate(180%)',
     border         : scrolled
-      ? '1px solid rgba(239,68,68,0.22)'
-      : '1px solid rgba(239,68,68,0.10)',
+      ? '1px solid rgba(255,255,255,0.12)'
+      : '1px solid rgba(255,255,255,0.05)',
     boxShadow      : scrolled
-      ? '0 8px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(239,68,68,0.14)'
-      : '0 4px 20px rgba(0,0,0,0.25)',
+      ? '0 16px 40px -12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.15)'
+      : '0 8px 24px -8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)',
     transition     : 'background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease',
   };
 
@@ -142,7 +142,7 @@ export default function Navbar() {
         <div
           className="absolute top-0 left-8 right-8 h-[1px] rounded-t-2xl"
           style={{
-            background  : 'linear-gradient(90deg, transparent, rgba(239,68,68,0.3), transparent)',
+            background  : 'linear-gradient(90deg, transparent, rgba(239,68,68,0.5), transparent)',
             opacity     : scrolled ? 1 : 0.5,
             transition  : 'opacity 0.4s ease',
           }}
@@ -211,7 +211,7 @@ export default function Navbar() {
         </div>
 
         {/* Scroll progress bar */}
-        <div className="absolute -bottom-[1px] left-0 w-full h-[2px] overflow-hidden rounded-b-2xl">
+        <div className="absolute bottom-[1px] left-6 right-6 h-[1.5px] overflow-hidden rounded-full">
           <div
             ref={progressBarRef}
             className="h-full w-full origin-left scale-x-0"

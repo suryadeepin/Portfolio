@@ -279,18 +279,6 @@ export default function ImageScrub() {
           <Phase5 r={p5} />
         </div>
 
-        {/* ── Top fade — blends section start into black ── */}
-        <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{
-          height: '22vh',
-          background: 'linear-gradient(to bottom, #000 0%, transparent 100%)',
-        }} />
-
-        {/* ── Bottom fade — blends section end into black ── */}
-        <div className="absolute inset-x-0 bottom-0 z-20 pointer-events-none" style={{
-          height: '22vh',
-          background: 'linear-gradient(to top, #000 0%, transparent 100%)',
-        }} />
-
       </div>
     </div>
   );

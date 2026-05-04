@@ -153,10 +153,13 @@ export default function Experience() {
   }, []);
 
   return (
-    <section id="experience" ref={sectionRef} className="relative py-20 md:py-28 px-4 md:px-16 min-h-screen overflow-hidden" style={{ background: 'rgba(3,0,0,0.82)' }}>
+    <section id="experience" ref={sectionRef} className="relative py-20 md:py-28 px-4 md:px-16 min-h-screen overflow-hidden" style={{ background: 'transparent' }}>
 
       {/* ── Animated background ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{
+        maskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+      }}>
 
         {/* Dot grid — tighter near centre */}
         <div className="absolute inset-0" style={{

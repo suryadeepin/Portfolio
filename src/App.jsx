@@ -19,6 +19,7 @@ startPreload();
 
 function App() {
   const [loaderDone, setLoaderDone] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(true); // default true, update in effect
   const isMobile = useIsMobile();
 
   // Handle global styles & mobile logic
@@ -33,6 +34,15 @@ function App() {
     document.body.style.overflowX = 'hidden';
     document.body.style.scrollbarWidth = 'none'; // Firefox
     document.body.style.msOverflowStyle = 'none'; // IE/Edge
+
+    // Detect strict desktop (no touch, wide screen) for heavy 3D elements
+    const checkDesktop = () => {
+      const isTouch = window.matchMedia('(pointer: coarse)').matches || ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0);
+      setIsDesktop(!isTouch && window.innerWidth > 1024);
+    };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
   // Guarantee absolute top position the exact moment the content mounts
@@ -45,13 +55,13 @@ function App() {
   return (
     <>
       {/* Custom cursor — desktop only (no pointer on touch) */}
-      {!isMobile && <CustomCursor />}
+      {isDesktop && <CustomCursor />}
 
       {/* Loader: on mobile skip model-ready gate (no model loaded) */}
-      <Loader onDone={() => setLoaderDone(true)} isMobile={isMobile} />
+      <Loader onDone={() => setLoaderDone(true)} isMobile={!isDesktop} />
 
-      {/* 3D model — only on desktop */}
-      {!isMobile && <HeroAvatar isReady={loaderDone} />}
+      {/* 3D model — STRICTLY only on PC/Laptop (non-touch, wide screen) */}
+      {isDesktop && <HeroAvatar isReady={loaderDone} />}
 
       {/* Subtle ambient background */}
       <GlobalBackground />

@@ -231,12 +231,16 @@ export default function Skills() {
       ref={sectionRef}
       className="relative py-20 md:py-28 px-4 md:px-16 min-h-screen"
       style={{
-        /* Semi-transparent so the 3D model is dimly visible behind */
-        background: 'rgba(2,0,0,0.68)',
+        /* Transparent so the 3D model is visible behind */
+        background: 'transparent',
       }}
     >
       {/* ── Animated background effects ── */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{
+        zIndex: 0,
+        maskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+      }}>
 
         {/* Dot grid */}
         <div className="absolute inset-0" style={{
@@ -311,8 +315,6 @@ export default function Skills() {
         ))}
 
         {/* Bottom + top vignette to contain effects */}
-        <div className="absolute bottom-0 left-0 right-0 h-32" style={{ background: 'linear-gradient(0deg, rgba(2,0,0,0.7) 0%, transparent 100%)' }} />
-        <div className="absolute top-0 left-0 right-0 h-20"   style={{ background: 'linear-gradient(180deg, rgba(2,0,0,0.6) 0%, transparent 100%)' }} />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto">

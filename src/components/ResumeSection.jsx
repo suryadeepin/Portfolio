@@ -86,7 +86,10 @@ export default function ResumeSection() {
       style={{ background: 'transparent' }}
     >
       {/* ── Animated background ── */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{
+        maskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+      }}>
 
         {/* Dot grid fading to edges */}
         <div className="absolute inset-0" style={{

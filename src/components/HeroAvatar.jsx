@@ -37,23 +37,18 @@ export default function HeroAvatar({ isReady }) {
     const MAX_X = 0.48;            // ±28° vertical tilt
 
     if (zone === 'hero') {
-      t.y = lerp(t.y,  mx * MAX_Y, 0.18); // faster: was 0.10
-      t.x = lerp(t.x, -my * MAX_X, 0.15); // faster: was 0.09
+      t.y = lerp(t.y,  mx * MAX_Y, 0.18);
+      t.x = lerp(t.x, -my * MAX_X, 0.15);
     } else if (zone === 'bio') {
       t.y = lerp(t.y, 0.55 + mx * 0.25, 0.10);
       t.x = lerp(t.x, 0,                 0.08);
     } else if (zone === 'post') {
-      const sk = skillTargetRef.current;
-      if (sk) {
-        const tx = (sk.nx * 2 - 1) * (Math.PI / 3.0);
-        const ty = -(sk.ny * 2 - 1) * 0.32;
-        t.y = lerp(t.y, tx, 0.10);
-        t.x = lerp(t.x, ty, 0.09);
-      } else {
-        t.y = lerp(t.y, mx * 0.6, 0.08);
-        t.x = lerp(t.x, 0,        0.06);
-      }
+      // Model is on the RIGHT, looking LEFT (body is rotated left ~ -0.6)
+      // Track mouse relative to that left-looking stance
+      t.y = lerp(t.y, -0.6 + mx * 0.4, 0.10);
+      t.x = lerp(t.x, -my * 0.2, 0.08);
     } else {
+      // 'scrub'
       t.y = lerp(t.y, 0, 0.06);
       t.x = lerp(t.x, 0, 0.06);
     }
@@ -298,22 +293,44 @@ export default function HeroAvatar({ isReady }) {
       .to(char.rotation, { x: 0, ease: 'none' }, 0);
     ownTriggersRef.current.push(tl3.scrollTrigger);
 
-    // Skills zone: partially lift the overlay so model shows dimly behind glass cards
+    // st4: after image-scrub ends (at skills), shift model right (cam.x = -7.5) and look left (rot.y = -0.6). Fade out overlay fully.
     const st4 = ScrollTrigger.create({
       trigger: '#skills',
       start: 'top 85%',
       onEnter: () => {
         zoneRef.current = 'post';
-        gsap.to(overlayProxy,  { tweenOp: -0.28, duration: 0.9, ease: 'power2.out', onUpdate: updateOverlay });
-        gsap.to(cam.position,  { x: 0, z: 28, y: 20, duration: 0.9, ease: 'power2.out' });
-        gsap.to(char.rotation, { y: 0, x: 0, duration: 0.9, ease: 'power2.out' });
+        // Reveal the model partially by dropping overlay proxy to -0.35 (overlay opacity = 0.65)
+        gsap.to(overlayProxy,  { tweenOp: -0.35, duration: 1.8, ease: 'power2.inOut', onUpdate: updateOverlay });
+        // Shift camera left so model goes to the RIGHT.
+        gsap.to(cam.position,  { x: -7.5, z: 46, y: 11.5, duration: 1.8, ease: 'power2.inOut' });
+        // Rotate body to face left towards the center content
+        gsap.to(char.rotation, { y: -0.6, x: 0.03, duration: 1.8, ease: 'power2.inOut' });
       },
       onLeaveBack: () => {
         zoneRef.current = 'scrub';
-        gsap.to(overlayProxy,  { tweenOp: 0, duration: 0.4, ease: 'power2.in', onUpdate: updateOverlay });
+        // Restore overlay to black to hide the model during image-scrub
+        gsap.to(overlayProxy,  { tweenOp: 0, duration: 1.5, ease: 'power2.inOut', onUpdate: updateOverlay });
+        // Restore camera and rotation to bio/scrub state (y: 0.7 makes it look right toward content)
+        gsap.to(cam.position,  { x: 6.5, z: 50, y: 11.5, duration: 1.5, ease: 'power2.inOut' });
+        gsap.to(char.rotation, { y: 0.7, x: 0, duration: 1.5, ease: 'power2.inOut' });
       },
     });
     ownTriggersRef.current.push(st4);
+
+    // st5: Dim the model further when entering #resume and #contact (Let's Build Together / Got an idea)
+    const st5 = ScrollTrigger.create({
+      trigger: '#resume',
+      start: 'top 75%',
+      onEnter: () => {
+        // Dim it more: overlay proxy to -0.15 (overlay opacity = 0.85)
+        gsap.to(overlayProxy, { tweenOp: -0.15, duration: 1.5, ease: 'power2.out', onUpdate: updateOverlay });
+      },
+      onLeaveBack: () => {
+        // Restore to the brighter #skills state
+        gsap.to(overlayProxy, { tweenOp: -0.35, duration: 1.5, ease: 'power2.inOut', onUpdate: updateOverlay });
+      },
+    });
+    ownTriggersRef.current.push(st5);
 
   }, [isReady]);
 
