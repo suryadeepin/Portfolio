@@ -290,7 +290,7 @@ export default function Hero() {
             </p>
             <div className="flex gap-5" style={{ justifyContent: isMobile ? 'center' : 'flex-start' }}>
               {[
-                { label: 'GitHub',   href: 'https://github.com/suryadeepin' },
+                { label: 'GitHub',   href: 'https://github.com/suryadeepbanerjee' },
                 { label: 'LinkedIn', href: 'https://www.linkedin.com/in/suryadeep-banerjee' },
                 { label: 'Résumé',   href: '/Resume.pdf' },
               ].map(({ label, href }) => (

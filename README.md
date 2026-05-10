@@ -10,7 +10,7 @@
 
 [![Live Site](https://img.shields.io/badge/🌐_Live_Site-suryadeepbanerjee.in-ef4444?style=for-the-badge&labelColor=0a0000)](https://suryadeepbanerjee.in)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-suryadeep--banerjee-0077b5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/suryadeep-banerjee)
-[![GitHub](https://img.shields.io/badge/GitHub-suryadeepin-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/suryadeepin)
+[![GitHub](https://img.shields.io/badge/GitHub-suryadeepbanerjee-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/suryadeepbanerjee)
 
 <br/>
 
@@ -100,7 +100,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/suryadeepin/Portfolio.git
+git clone https://github.com/suryadeepbanerjee/Portfolio.git
 cd Portfolio
 
 # Install dependencies
@@ -161,7 +161,7 @@ Portfolio/
 |---|---|
 | 🌐 **Website** | [suryadeepbanerjee.in](https://suryadeepbanerjee.in) |
 | 💼 **LinkedIn** | [linkedin.com/in/suryadeep-banerjee](https://www.linkedin.com/in/suryadeep-banerjee) |
-| 🐙 **GitHub** | [github.com/suryadeepin](https://github.com/suryadeepin) |
+| 🐙 **GitHub** | [github.com/suryadeepbanerjee](https://github.com/suryadeepbanerjee) |
 | 📧 **Email** | [official@suryadeepbanerjee.in](mailto:official@suryadeepbanerjee.in) |
 
 </div>
